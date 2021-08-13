@@ -17,5 +17,3 @@
 vendor/
 
 config/.env
-
-go.sum
