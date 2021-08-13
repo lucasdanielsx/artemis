@@ -2,7 +2,6 @@ package main
 
 import (
 	Logs "artemis/pkg/util"
-	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
 	"net/http"
 )
@@ -19,8 +18,7 @@ func main() {
 
 	Logs.Info("Artemis API")
 
-	router := mux.NewRouter()
-	err := http.ListenAndServe(port, router)
+	err := http.ListenAndServe(port, nil)
 
 	if err != nil {
 		Logs.Fatal("Can not start Artemis API: ", err)
