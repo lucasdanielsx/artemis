@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    command: redis-server --requirepass artemis
+    ports:
+      - "6379:6379"
+    networks:
+      - artemis
+
+networks:
+  artemis:
+    driver: bridge

@@ -1,13 +1,16 @@
 package api
 
 import (
-	util "artemis/pkg/util"
+	database "artemis/pkg/database"
 	"net/http"
 )
 
 func Health(w http.ResponseWriter, request *http.Request) {
-	w.WriteHeader(200)
-	_, err := w.Write([]byte("OK"))
+	_, err := database.RedisHealth()
 
-	util.HandleError("Internal Error", err)
+	if err != nil {
+		w.WriteHeader(200)
+	}
+
+	w.WriteHeader(500)
 }
