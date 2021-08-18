@@ -4,7 +4,6 @@ RUN apk add --no-cache git
 
 WORKDIR /tmp/artemis
 
-# We want to populate the module cache based on the go.{mod,sum} files.
 COPY go.mod .
 COPY go.sum .
 
@@ -15,8 +14,9 @@ COPY . .
 # Unit tests
 #RUN CGO_ENABLED=0 go test -v
 
-# Build the Go app
 RUN go build -o ./out/artemis/ ./...
+
+COPY config/.env-example ./out/artemis/config/.env
 
 FROM alpine:3.9
 
@@ -26,5 +26,6 @@ COPY --from=build_base /tmp/artemis/out/artemis /app/artemis
 
 EXPOSE 8080
 
-# Run the binary program produced by `go install`
+WORKDIR /app/artemis
+
 CMD ["/app/artemis/main"]
