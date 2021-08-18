@@ -2,10 +2,24 @@ version: '3'
 
 services:
   redis:
-    image: redis
+    image: redis:6.0.15-alpine
+    restart: always
     command: redis-server --requirepass artemis
     ports:
       - "6379:6379"
+    networks:
+      - artemis
+  postgres:
+    image: postgres:10.5
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=artemis
+      - POSTGRES_USER=artemis
+      - POSTGRES_DB=db_artemis
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
     networks:
       - artemis
 

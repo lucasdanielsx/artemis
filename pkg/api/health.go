@@ -5,10 +5,11 @@ import (
 	"net/http"
 )
 
-func Health(w http.ResponseWriter, request *http.Request) {
-	_, err := database.RedisHealth()
+func Health(w http.ResponseWriter, _ *http.Request) {
+	redis := database.RedisHealth()
+	postgres := database.PostgresHealth()
 
-	if err != nil {
+	if redis && postgres {
 		w.WriteHeader(200)
 	}
 

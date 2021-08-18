@@ -8,19 +8,25 @@ import (
 
 var ctx = context.Background()
 
-func RedisHealth() (string, error) {
-	return connection().Ping(ctx).Result()
+func RedisHealth() bool {
+	_, err := redisConnection().Ping(ctx).Result()
+
+	if err != nil {
+		return false
+	}
+
+	return true
 }
 
-func SetValue(key string, value string) (string, error) {
-	return connection().Set(ctx, key, value, 0).Result()
-}
+//func SetValue(key string, value string) (string, error) {
+//	return redisConnection().Set(ctx, key, value, 0).Result()
+//}
+//
+//func GetValue(key string) (string, error) {
+//	return redisConnection().Get(ctx, key).Result()
+//}
 
-func GetValue(key string) (string, error) {
-	return connection().Get(ctx, key).Result()
-}
-
-func connection() *redis.Client {
+func redisConnection() *redis.Client {
 	uri, _ := viper.Get("REDIS_URI").(string)
 	pwd, _ := viper.Get("REDIS_PWD").(string)
 
