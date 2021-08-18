@@ -1,6 +1,7 @@
 package database
 
 import (
+	"artemis/pkg/util"
 	"context"
 	"github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
@@ -12,6 +13,7 @@ func RedisHealth() bool {
 	_, err := redisConnection().Ping(ctx).Result()
 
 	if err != nil {
+		util.HandleError("Can not connect to redis: ", err)
 		return false
 	}
 
