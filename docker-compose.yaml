@@ -9,7 +9,7 @@ services:
     environment:
       - ARTEMIS_PORT=:8080
       - REDIS_URI=redis:6379
-      - REDIS_pwd=artemis
+      - REDIS_PWD=artemis
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_USER=artemis

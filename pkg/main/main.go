@@ -8,13 +8,14 @@ import (
 )
 
 func main() {
-	util.Info("Artemis API")
 	viper.SetConfigFile("./config/.env")
 
 	err := viper.ReadInConfig()
 	util.HandleFatal("Error loading .env file : ", err)
 
 	port, _ := viper.Get("ARTEMIS_PORT").(string)
+
+	util.Info("Starting Artemis API on port " + port)
 
 	http.HandleFunc("/health", api.Health)
 
