@@ -17,7 +17,7 @@ func main() {
 
 	util.Info("Starting Artemis API on port " + port)
 
-	http.HandleFunc("/health", api.Health)
+	http.HandleFunc("/health", api.HealthServer)
 
 	err = http.ListenAndServe(port, nil)
 	util.HandleFatal("Can not start Artemis API: ", err)

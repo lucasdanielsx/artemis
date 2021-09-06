@@ -7,27 +7,27 @@ import (
 	"net/http"
 )
 
-type health struct {
+type Health struct {
 	Name   string `json:"name"`
 	Status bool   `json:"status"`
 }
 
-func Health(w http.ResponseWriter, _ *http.Request) {
+func HealthServer(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var checks []health
+	var checks []Health
 
 	redis := database.RedisHealth()
 	postgres := database.PostgresHealth()
 
-	checks = append(checks, health{"redis", redis})
-	checks = append(checks, health{"postgres", postgres})
+	checks = append(checks, Health{"redis", redis})
+	checks = append(checks, Health{"postgres", postgres})
 
 	if !redis || !postgres {
-		checks = append(checks, health{"app", false})
+		checks = append(checks, Health{"app", false})
 		w.WriteHeader(503)
 	} else {
-		checks = append(checks, health{"app", true})
+		checks = append(checks, Health{"app", true})
 		w.WriteHeader(200)
 	}
 
