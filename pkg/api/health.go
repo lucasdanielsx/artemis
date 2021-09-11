@@ -1,13 +1,13 @@
 package api
 
 import (
-	database "artemis/pkg/database"
+	"artemis/pkg/database"
 	"artemis/pkg/util"
 	"encoding/json"
 	"net/http"
 )
 
-type Health struct {
+type health struct {
 	Name   string `json:"name"`
 	Status bool   `json:"status"`
 }
@@ -15,20 +15,20 @@ type Health struct {
 func HealthServer(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var checks []Health
+	var checks []health
 
 	redis := database.RedisHealth()
 	postgres := database.PostgresHealth()
 
-	checks = append(checks, Health{"redis", redis})
-	checks = append(checks, Health{"postgres", postgres})
+	checks = append(checks, health{"redis", redis})
+	checks = append(checks, health{"postgres", postgres})
 
-	if !redis || !postgres {
-		checks = append(checks, Health{"app", false})
-		w.WriteHeader(503)
-	} else {
-		checks = append(checks, Health{"app", true})
+	if redis && postgres {
+		checks = append(checks, health{"app", true})
 		w.WriteHeader(200)
+	} else {
+		checks = append(checks, health{"app", false})
+		w.WriteHeader(503)
 	}
 
 	marshal, err := json.Marshal(checks)
